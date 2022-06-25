@@ -15,7 +15,6 @@ const projectSchema = new Schema({
     type: String,
     enum: ['Not Started', 'In Progress', 'Done'],
     default: 'Not Started',
-    required: true,
   },
   client: {
     type: Schema.Types.ObjectId,
