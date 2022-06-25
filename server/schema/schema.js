@@ -8,16 +8,6 @@ import {
 
 import { clients, projects } from '../sample-data.js';
 
-const ProjectType = new GraphQLObjectType({
-  name: 'Project',
-  fields: {
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    description: { type: GraphQLString },
-    status: { type: GraphQLString },
-  },
-});
-
 const ClientType = new GraphQLObjectType({
   name: 'Client',
   fields: {
@@ -25,6 +15,22 @@ const ClientType = new GraphQLObjectType({
     name: { type: GraphQLString },
     email: { type: GraphQLString },
     phone: { type: GraphQLString },
+  },
+});
+
+const ProjectType = new GraphQLObjectType({
+  name: 'Project',
+  fields: {
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    description: { type: GraphQLString },
+    status: { type: GraphQLString },
+    client: {
+      type: ClientType,
+      resolve(parent, args) {
+        return clients.find((client) => client.id === parent.clientId);
+      },
+    },
   },
 });
 
