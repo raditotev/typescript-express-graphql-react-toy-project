@@ -103,7 +103,21 @@ const mutation = new GraphQLObjectType({
             email: args.email || client.email,
             phone: args.phone || client.phone,
           },
-        });
+    deleteClient: {
+      type: ClientType,
+      args: {
+        id: { type: GraphQLID },
+      },
+      async resolve(_, args) {
+        const client = await Client.findById(args.id);
+        await Project.find({ client: client.id })
+          .remove()
+          .exec()
+          .catch((err) => {
+            console.log(err);
+            throw new Error(err);
+          });
+        return await client.delete();
       },
     },
     addProject: {
@@ -157,6 +171,15 @@ const mutation = new GraphQLObjectType({
           },
           { new: true }
         );
+      },
+    },
+    deleteProject: {
+      type: ProjectType,
+      args: {
+        id: { type: GraphQLID },
+      },
+      async resolve(_, args) {
+        return await Project.findByIdAndDelete(args.id);
       },
     },
   },
