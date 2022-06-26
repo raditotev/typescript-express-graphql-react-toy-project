@@ -91,18 +91,26 @@ const mutation = new GraphQLObjectType({
     updateClient: {
       type: ClientType,
       args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
         email: { type: GraphQLString },
         phone: { type: GraphQLString },
       },
-      resolve(_, args) {
-        const client = Client.findById(args.id);
-        return Client.findByIdAndUpdate(args.id, {
-          $set: {
-            name: args.name || client.name,
-            email: args.email || client.email,
-            phone: args.phone || client.phone,
+      async resolve(_, args) {
+        const client = await Client.findById(args.id);
+        return await Client.findOneAndUpdate(
+          { _id: args.id },
+          {
+            $set: {
+              name: args.name || client.name,
+              email: args.email || client.email,
+              phone: args.phone || client.phone,
+            },
           },
+          { new: true }
+        );
+      },
+    },
     deleteClient: {
       type: ClientType,
       args: {
@@ -155,18 +163,18 @@ const mutation = new GraphQLObjectType({
         name: { type: GraphQLString },
         description: { type: GraphQLString },
         status: { type: GraphQLString },
-        clientId: { type: GraphQLID },
+        client: { type: GraphQLID },
       },
-      resolve(_, args) {
-        const project = Project.findById(args.id);
-        return Project.findByIdAndUpdate(
-          args.id,
+      async resolve(_, args) {
+        const project = await Project.findById(args.id);
+        return await Project.findOneAndUpdate(
+          { _id: args.id },
           {
             $set: {
               name: args.name || project.name,
               description: args.description || project.description,
               status: args.status || project.status,
-              clientId: args.clientId || project.clientId,
+              client: args.client || project.client,
             },
           },
           { new: true }
