@@ -162,7 +162,17 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
-        status: { type: GraphQLString },
+        status: {
+          type: new GraphQLEnumType({
+            name: 'ProjectStatusUpdate',
+            values: {
+              new: { value: 'Not Started' },
+              progress: { value: 'In Progress' },
+              done: { value: 'Done' },
+            },
+          }),
+          defaultValue: 'Not Started',
+        },
         client: { type: GraphQLID },
       },
       async resolve(_, args) {
