@@ -8,7 +8,6 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import { clients, projects } from '../sample-data.js';
 import { Client } from '../models/client.js';
 import { Project } from '../models/project.js';
 
