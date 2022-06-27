@@ -4,9 +4,20 @@ import { IClient } from '../../../server/models/client';
 import { GET_CLIENTS } from './queries';
 
 const DELETE_CLIENT = gql`
-  mutation deleteClient($id: ID!) {
+  mutation ($id: ID!) {
     deleteClient(id: $id) {
       id
+    }
+  }
+`;
+
+const ADD_CLIENT = gql`
+  mutation ($name: String!, $email: String!, $phone: String!) {
+    addClient(name: $name, email: $email, phone: $phone) {
+      id
+      name
+      email
+      phone
     }
   }
 `;
@@ -29,4 +40,27 @@ const useDeleteClient = ({ id }: { id: string }) => {
   return { deleteClient };
 };
 
-export { useDeleteClient };
+const useAddClient = ({
+  name,
+  email,
+  phone,
+}: {
+  name: string;
+  email: string;
+  phone: string;
+}) => {
+  const [addClient] = useMutation(ADD_CLIENT, {
+    variables: { name, email, phone },
+    update(cache, { data: { addClient } }) {
+      cache.modify({
+        fields: {
+          clients: (clients) => [...clients, addClient],
+        },
+      });
+    },
+  });
+
+  return { addClient };
+};
+
+export { useDeleteClient, useAddClient };
