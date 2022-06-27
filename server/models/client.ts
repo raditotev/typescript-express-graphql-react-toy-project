@@ -2,7 +2,13 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const clientSchema = new Schema({
+export interface IClient extends mongoose.Document {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+const clientSchema = new Schema<IClient>({
   name: {
     type: String,
     required: true,
@@ -17,6 +23,6 @@ const clientSchema = new Schema({
   },
 });
 
-const Client = mongoose.model('Client', clientSchema);
+const Client = mongoose.model<IClient>('Client', clientSchema);
 
 export { Client };

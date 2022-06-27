@@ -1,8 +1,17 @@
 import mongoose from 'mongoose';
 
+import { IClient } from './client';
+
 const { Schema } = mongoose;
 
-const projectSchema = new Schema({
+interface IProject extends mongoose.Document {
+  name: string;
+  description: string;
+  status: string;
+  client: IClient['_id'];
+}
+
+const projectSchema = new Schema<IProject>({
   name: {
     type: String,
     required: true,
@@ -23,6 +32,6 @@ const projectSchema = new Schema({
   },
 });
 
-const Project = mongoose.model('Project', projectSchema);
+const Project = mongoose.model<IProject>('Project', projectSchema);
 
 export { Project };
