@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build": "cd server/ && tsc",
+    "build:watch": "cd server/ tsc --watch",
     "start": "node server/dist/index.js",
     "dev": "nodemon server/index.ts"
   },
