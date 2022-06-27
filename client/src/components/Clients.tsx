@@ -1,7 +1,9 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
+import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
 
 import { IClient } from '../../../server/models/client';
+import ClientRow from './ClientRow';
 
 const GET_CLIENTS = gql`
   query GetClients {
@@ -27,13 +29,23 @@ const Clients = () => {
     );
 
   return (
-    <ul>
-      {data.clients.map((client: IClient) => (
-        <li key={client.id}>
-          {client.name} - {client.email} - {client.phone}
-        </li>
-      ))}
-    </ul>
+    <TableContainer>
+      <Table variant="striped">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>E-mail</Th>
+            <Th>Phone</Th>
+            <Th></Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data.clients.map((client: IClient) => (
+            <ClientRow key={client.id} client={client} />
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 };
 
