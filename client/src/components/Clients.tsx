@@ -1,23 +1,11 @@
 import React from 'react';
-import { gql, useQuery } from '@apollo/client';
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
 
-import { IClient } from '../../../server/models/client';
+import { useGetClients } from '../hooks/queries';
 import ClientRow from './ClientRow';
 
-const GET_CLIENTS = gql`
-  query GetClients {
-    clients {
-      id
-      name
-      email
-      phone
-    }
-  }
-`;
-
 const Clients = () => {
-  const { data, loading, error } = useQuery(GET_CLIENTS);
+  const { clients, loading, error } = useGetClients();
 
   if (loading) return <p>Loading...</p>;
   if (error)
@@ -40,7 +28,7 @@ const Clients = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {data.clients.map((client: IClient) => (
+          {clients.map((client) => (
             <ClientRow key={client.id} client={client} />
           ))}
         </Tbody>
