@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
+import colors from 'colors';
 
-const connectDB = async () => {
-  await mongoose.connect(process.env.MONGO_DB_URI);
-  console.log('Connected to MongoDB'.cyan.bold);
+const connectDB = () => {
+  mongoose.connect(process.env.MONGO_DB_URI as string);
+  mongoose.connection.on('connected', () => {
+    console.log(`${colors.cyan.bold('MongoDB Connected')}`);
+  });
 };
 
 export { connectDB };

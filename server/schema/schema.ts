@@ -8,8 +8,8 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import { Client } from '../models/client.js';
-import { Project } from '../models/project.js';
+import { Client } from '../models/client';
+import { Project } from '../models/project';
 
 const ClientType = new GraphQLObjectType({
   name: 'Client',
@@ -97,7 +97,12 @@ const mutation = new GraphQLObjectType({
         phone: { type: GraphQLString },
       },
       async resolve(_, args) {
-        const client = await Client.findById(args.id);
+        const client = await Client.findById(args.id).catch((err) =>
+          console.log(err)
+        );
+        if (!client) {
+          throw new Error('Client not found');
+        }
         return await Client.findOneAndUpdate(
           { _id: args.id },
           {
@@ -117,9 +122,14 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) },
       },
       async resolve(_, args) {
-        const client = await Client.findById(args.id);
+        const client = await Client.findById(args.id).catch((err) =>
+          console.log(err)
+        );
+        if (!client) {
+          throw new Error('Client not found');
+        }
         await Project.find({ client: client.id })
-          .remove()
+          .deleteOne()
           .exec()
           .catch((err) => {
             console.log(err);
@@ -176,7 +186,12 @@ const mutation = new GraphQLObjectType({
         client: { type: GraphQLID },
       },
       async resolve(_, args) {
-        const project = await Project.findById(args.id);
+        const project = await Project.findById(args.id).catch((err) =>
+          console.log(err)
+        );
+        if (!project) {
+          throw new Error('Project not found');
+        }
         return await Project.findOneAndUpdate(
           { _id: args.id },
           {

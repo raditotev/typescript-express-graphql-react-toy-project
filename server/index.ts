@@ -1,10 +1,9 @@
 import 'dotenv/config';
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
-import colors from 'colors';
 
-import { schema } from './schema/schema.js';
-import { connectDB } from './config/db.js';
+import { schema } from './schema/schema';
+import { connectDB } from './config/db';
 
 const app = express();
 app.use(
