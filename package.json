@@ -7,13 +7,14 @@
     "build": "cd server/ && tsc",
     "build:watch": "cd server/ tsc --watch",
     "start": "node server/dist/index.js",
-    "dev": "nodemon server/index.ts"
+    "dev": "concurrently --names \"SERVER,CLIENT\" -c \"cyan.bold,magenta.bold\" \"nodemon server/index.ts\" \"cd client/ && npm start\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
+    "concurrently": "^7.2.2",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-graphql": "^0.12.0",
