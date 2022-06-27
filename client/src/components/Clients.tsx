@@ -1,5 +1,13 @@
 import React from 'react';
-import { Table, Thead, Tbody, Tr, Th, TableContainer } from '@chakra-ui/react';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  TableContainer,
+  Spinner,
+} from '@chakra-ui/react';
 
 import { useGetClients } from '../hooks/queries';
 import ClientRow from './ClientRow';
@@ -7,7 +15,7 @@ import ClientRow from './ClientRow';
 const Clients = () => {
   const { clients, loading, error } = useGetClients();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner size="xl" />;
   if (error)
     return (
       <p>
