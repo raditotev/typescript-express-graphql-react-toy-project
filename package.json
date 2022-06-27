@@ -5,6 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
     "start": "node server/dist/index.js",
     "dev": "nodemon server/index.ts"
   },
