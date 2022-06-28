@@ -33,6 +33,15 @@ const useDeleteClient = ({ id }: { id: string }) => {
         },
       });
     },
+    optimisticResponse({ id }) {
+      return {
+        __typename: 'Mutation',
+        deleteClient: {
+          __typename: 'Client',
+          id,
+        },
+      };
+    },
   });
 
   return { deleteClient };
@@ -55,6 +64,18 @@ const useAddClient = ({
           clients: (clients) => [...clients, addClient],
         },
       });
+    },
+    optimisticResponse({ name, email, phone }) {
+      return {
+        __typename: 'Mutation',
+        addClient: {
+          __typename: 'Client',
+          id: '-1',
+          name,
+          email,
+          phone,
+        },
+      };
     },
   });
 
