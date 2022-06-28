@@ -9,7 +9,9 @@ function App() {
   return (
     <Container centerContent minWidth="80vw">
       <Header />
-      <Button onClick={onOpen}>Add Client</Button>
+      <Button onClick={onOpen} my={10}>
+        Add Client
+      </Button>
       <AddClient isOpen={isOpen} onClose={onClose} />
       <Clients />
     </Container>

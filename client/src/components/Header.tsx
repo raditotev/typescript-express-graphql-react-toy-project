@@ -5,7 +5,7 @@ import logo from '../assets/logo.png';
 
 const Header: React.FC = () => {
   return (
-    <Flex alignItems="center" height="40px" gap="10px" mb="3rem">
+    <Flex alignItems="center" height="40px" gap="10px">
       <Image src={logo} alt="Logo" boxSize="30px" />
       <Heading fontSize="20px" color="#df3ca6">
         ProjectManagement
