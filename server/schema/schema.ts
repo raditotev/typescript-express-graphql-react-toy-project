@@ -125,16 +125,24 @@ const mutation = new GraphQLObjectType({
         const client = await Client.findById(args.id).catch((err) =>
           console.log(err)
         );
+
         if (!client) {
           throw new Error('Client not found');
         }
-        await Project.find({ client: client.id })
-          .deleteOne()
-          .exec()
-          .catch((err) => {
+
+        const projects = await Project.find({ client: args.id }).catch(
+          (err) => {
             console.log(err);
             throw new Error(err);
-          });
+          }
+        );
+
+        if (projects.length > 0) {
+          for (const project of projects) {
+            await project.delete();
+          }
+        }
+
         return await client.delete();
       },
     },
