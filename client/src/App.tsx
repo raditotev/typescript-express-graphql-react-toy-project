@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Clients from './components/Clients';
 import { Container, Button, useDisclosure } from '@chakra-ui/react';
 import AddClient from './components/AddClient';
+import Projects from './components/Projects';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -13,6 +14,7 @@ function App() {
         Add Client
       </Button>
       <AddClient isOpen={isOpen} onClose={onClose} />
+      <Projects />
       <Clients />
     </Container>
   );

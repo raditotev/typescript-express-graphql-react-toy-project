@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 
 import { IClient } from '../../../server/models/client';
+import { IProject } from '../../../server/models/project';
 
 const GET_CLIENTS = gql`
   query GetClients {
@@ -13,6 +14,23 @@ const GET_CLIENTS = gql`
   }
 `;
 
+const GET_PROJECTS = gql`
+  query GetProjects {
+    projects {
+      id
+      name
+      description
+      status
+      client {
+        id
+        name
+        email
+        phone
+      }
+    }
+  }
+`;
+
 const useGetClients = () => {
   const { data, loading, error } = useQuery(GET_CLIENTS);
   const { clients }: { clients: IClient[] } = data || [];
@@ -20,4 +38,11 @@ const useGetClients = () => {
   return { loading, error, clients };
 };
 
-export { useGetClients, GET_CLIENTS };
+const useGetProjects = () => {
+  const { data, loading, error } = useQuery(GET_PROJECTS);
+  const { projects }: { projects: IProject[] } = data || [];
+
+  return { loading, error, projects };
+};
+
+export { useGetClients, useGetProjects };

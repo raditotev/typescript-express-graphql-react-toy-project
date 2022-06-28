@@ -4,7 +4,7 @@ import { IClient } from './client';
 
 const { Schema } = mongoose;
 
-interface IProject extends mongoose.Document {
+export interface IProject extends mongoose.Document {
   name: string;
   description: string;
   status: string;
