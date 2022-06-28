@@ -11,11 +11,13 @@ import {
 
 import { useGetClients } from '../hooks/queries';
 import ClientRow from './ClientRow';
+import NotFound from './NotFound';
 
 const Clients = () => {
   const { clients, loading, error } = useGetClients();
 
   if (loading) return <Spinner size="xl" />;
+
   if (error)
     return (
       <p>
@@ -24,8 +26,10 @@ const Clients = () => {
       </p>
     );
 
+  if (clients.length === 0) return <NotFound message="No clients found" />;
+
   return (
-    <TableContainer>
+    <TableContainer my={10}>
       <Table variant="striped">
         <Thead>
           <Tr>
