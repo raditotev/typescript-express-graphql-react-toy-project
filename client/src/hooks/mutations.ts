@@ -1,7 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 
 import { IClient } from '../../../server/models/client';
-import { GET_CLIENTS } from './queries';
 
 const DELETE_CLIENT = gql`
   mutation ($id: ID!) {
@@ -27,12 +26,11 @@ const useDeleteClient = ({ id }: { id: string }) => {
     variables: { id },
     // refetchQueries: ['GetClients'],
     update(cache, { data: { deleteClient } }) {
-      cache.updateQuery({ query: GET_CLIENTS }, ({ clients }) => {
-        return {
-          clients: clients.filter(
-            (client: IClient) => client.id !== deleteClient.id
-          ),
-        };
+      cache.modify({
+        fields: {
+          clients: (clients) =>
+            clients.filter((client: IClient) => client.id !== deleteClient.id),
+        },
       });
     },
   });
