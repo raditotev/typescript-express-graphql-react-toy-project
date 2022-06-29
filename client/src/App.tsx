@@ -1,21 +1,21 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Header from './components/Header';
-import Clients from './components/Clients';
-import { Container, Button, useDisclosure } from '@chakra-ui/react';
-import AddClient from './components/AddClient';
-import Projects from './components/Projects';
+import { Container } from '@chakra-ui/react';
+import HomePage from './pages/Home.page';
+import ProjectPage from './pages/Project.page';
 
 function App() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Container centerContent minWidth="80vw">
       <Header />
-      <Button onClick={onOpen} my={10}>
-        Add Client
-      </Button>
-      <AddClient isOpen={isOpen} onClose={onClose} />
-      <Projects />
-      <Clients />
+      <Router>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="projects/:id" element={<ProjectPage />} />
+        </Routes>
+      </Router>
     </Container>
   );
 }
