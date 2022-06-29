@@ -9,10 +9,7 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 
-interface FieldAttributesProps {
-  field: React.HTMLAttributes<HTMLInputElement>;
-  form: HTMLFormElement;
-}
+import { InputFieldAttributesProps } from '../types';
 
 interface FormValueProps {
   name: string;
@@ -50,7 +47,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
       {({ isSubmitting }) => (
         <Form>
           <Field name="name">
-            {({ field, form }: FieldAttributesProps) => (
+            {({ field, form }: InputFieldAttributesProps) => (
               <FormControl isInvalid={form.errors.name && form.touched.name}>
                 <FormLabel htmlFor="name">Name</FormLabel>
                 <Input id="name" type="text" {...field} />
@@ -59,7 +56,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
             )}
           </Field>
           <Field name="email">
-            {({ field, form }: FieldAttributesProps) => (
+            {({ field, form }: InputFieldAttributesProps) => (
               <FormControl isInvalid={form.errors.email && form.touched.email}>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <Input id="email" type="email" {...field} />
@@ -68,7 +65,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
             )}
           </Field>
           <Field name="phone">
-            {({ field, form }: FieldAttributesProps) => (
+            {({ field, form }: InputFieldAttributesProps) => (
               <FormControl isInvalid={form.errors.phone && form.touched.phone}>
                 <FormLabel htmlFor="phone">Phone</FormLabel>
                 <Input id="phone" type="tel" {...field} />
