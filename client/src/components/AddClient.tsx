@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -6,13 +6,9 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
 } from '@chakra-ui/react';
 import { useAddClient } from '../hooks/mutations';
+import ClientForm from './ClientForm';
 
 interface AddClientProps {
   isOpen: boolean;
@@ -20,19 +16,7 @@ interface AddClientProps {
 }
 
 const AddClient: React.FC<AddClientProps> = ({ isOpen, onClose }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const { addClient } = useAddClient({ name, email, phone });
-
-  const clickHandler = () => {
-    addClient();
-
-    setName('');
-    setEmail('');
-    setPhone('');
-    onClose();
-  };
+  const { addClient } = useAddClient({ name: '', email: '', phone: '' });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -41,48 +25,8 @@ const AddClient: React.FC<AddClientProps> = ({ isOpen, onClose }) => {
         <ModalHeader>Add New Client</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <FormControl as="fieldset">
-              <FormLabel htmlFor="name">Name address</FormLabel>
-              <Input
-                id="name"
-                type="name"
-                value={name}
-                onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                  setName(e.currentTarget.value)
-                }
-              />
-            </FormControl>
-            <FormControl as="fieldset">
-              <FormLabel htmlFor="email">Email address</FormLabel>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                  setEmail(e.currentTarget.value)
-                }
-              />
-            </FormControl>
-            <FormControl as="fieldset">
-              <FormLabel htmlFor="phone">Phone number</FormLabel>
-              <Input
-                id="phone"
-                type="phone"
-                value={phone}
-                onChange={(e: React.FormEvent<HTMLInputElement>) =>
-                  setPhone(e.currentTarget.value)
-                }
-              />
-            </FormControl>
-          </form>
+          <ClientForm submitHandler={addClient} closeModal={onClose} />
         </ModalBody>
-
-        <ModalFooter>
-          <Button colorScheme="pink" onClick={clickHandler}>
-            Add
-          </Button>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );
