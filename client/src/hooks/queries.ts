@@ -19,10 +19,18 @@ const GET_PROJECTS = gql`
     projects {
       id
       name
+      status
+    }
+  }
+`;
+
+const GET_PROJECT = gql`
+  query GetProject($id: ID!) {
+    project(id: $id) {
+      name
       description
       status
       client {
-        id
         name
         email
         phone
@@ -30,6 +38,10 @@ const GET_PROJECTS = gql`
     }
   }
 `;
+
+interface ProjectProps extends IProject {
+  client: IClient;
+}
 
 const useGetClients = () => {
   const { data, loading, error } = useQuery(GET_CLIENTS);
@@ -45,4 +57,16 @@ const useGetProjects = () => {
   return { loading, error, projects };
 };
 
-export { useGetClients, useGetProjects };
+const useGetSingleProject = ({ id }: { id: string | undefined }) => {
+  const { data, loading, error } = useQuery<{ project: ProjectProps }>(
+    GET_PROJECT,
+    {
+      variables: { id },
+    }
+  );
+  const { project } = data || { project: null };
+
+  return { loading, error, project };
+};
+
+export { useGetClients, useGetProjects, useGetSingleProject };
