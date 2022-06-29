@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Flex, Heading, Button, Stack, Text } from '@chakra-ui/react';
+
 import { IProject } from '../../../server/models/project';
 
 interface ProjectItemProps {
@@ -18,7 +20,9 @@ const ProjectItem: React.FC<ProjectItemProps> = ({ project }) => {
             {status}
           </Text>
         </Stack>
-        <Button>VIEW</Button>
+        <Link to={`projects/${project.id}`}>
+          <Button>VIEW</Button>
+        </Link>
       </Flex>
     </Box>
   );
