@@ -38,7 +38,14 @@ const ProjectPage = () => {
   const { name, description, status, client } = project;
 
   return (
-    <Flex flexDir="column" mt={10} borderWidth={1} borderRadius="lg" p={5}>
+    <Flex
+      w="100%"
+      flexDir="column"
+      mt={10}
+      borderWidth={1}
+      borderRadius="lg"
+      p={5}
+    >
       <Button alignSelf="flex-end">
         <Link to="/">BACK</Link>
       </Button>
