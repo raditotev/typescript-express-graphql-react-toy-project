@@ -48,24 +48,7 @@ const ADD_PROJECT = gql`
 const useDeleteClient = ({ id }: { id: string }) => {
   const [deleteClient] = useMutation(DELETE_CLIENT, {
     variables: { id },
-    // refetchQueries: ['GetClients'],
-    update(cache, { data: { deleteClient } }) {
-      cache.modify({
-        fields: {
-          clients: (clients) =>
-            clients.filter((client: IClient) => client.id !== deleteClient.id),
-        },
-      });
-    },
-    optimisticResponse({ id }) {
-      return {
-        __typename: 'Mutation',
-        deleteClient: {
-          __typename: 'Client',
-          id,
-        },
-      };
-    },
+    refetchQueries: ['GetClients', 'GetProjects'],
   });
 
   return { deleteClient };
