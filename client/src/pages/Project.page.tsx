@@ -10,15 +10,18 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import { useGetSingleProject } from '../hooks/queries';
 import NotFound from '../components/NotFound';
+import { useDeleteProject } from '../hooks/mutations';
 
 const ProjectPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { loading, error, project } = useGetSingleProject({ id });
+  const { deleteProject } = useDeleteProject({ id: '' });
 
   if (loading)
     return (
@@ -36,6 +39,13 @@ const ProjectPage = () => {
   if (!project) return <NotFound message="No projects found" />;
 
   const { name, description, status, client } = project;
+
+  const deleteHandler = () => {
+    if (!!id) {
+      deleteProject({ variables: { id } });
+      navigate('/');
+    }
+  };
 
   return (
     <Flex
@@ -75,7 +85,9 @@ const ProjectPage = () => {
       </Box>
       <Stack direction="row" spacing={4} alignSelf="flex-end" mt={10}>
         <Button>EDIT</Button>
-        <Button colorScheme="pink">DELETE</Button>
+        <Button colorScheme="pink" onClick={deleteHandler}>
+          DELETE
+        </Button>
       </Stack>
     </Flex>
   );
