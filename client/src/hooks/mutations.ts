@@ -107,6 +107,29 @@ const useAddProject = ({
       status,
       client,
     },
+    update(cache, { data: { addProject } }) {
+      cache.modify({
+        fields: {
+          projects: (projects) => [...projects, addProject],
+        },
+      });
+    },
+    optimisticResponse({ name, description, status, client }) {
+      return {
+        __typename: 'Mutation',
+        addProject: {
+          __typename: 'Project',
+          id: String(Math.random()),
+          name,
+          description,
+          status,
+          client: {
+            __typename: 'Client',
+            id: client,
+          },
+        },
+      };
+    },
   });
 
   return { addProject };
