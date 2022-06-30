@@ -21,6 +21,30 @@ const ADD_CLIENT = gql`
   }
 `;
 
+const ADD_PROJECT = gql`
+  mutation (
+    $name: String!
+    $description: String!
+    $status: ProjectStatus!
+    $client: ID!
+  ) {
+    addProject(
+      name: $name
+      description: $description
+      status: $status
+      client: $client
+    ) {
+      id
+      name
+      description
+      status
+      client {
+        id
+      }
+    }
+  }
+`;
+
 const useDeleteClient = ({ id }: { id: string }) => {
   const [deleteClient] = useMutation(DELETE_CLIENT, {
     variables: { id },
@@ -82,4 +106,27 @@ const useAddClient = ({
   return { addClient };
 };
 
-export { useDeleteClient, useAddClient };
+const useAddProject = ({
+  name,
+  description,
+  status,
+  client,
+}: {
+  name: string;
+  description: string;
+  status: string;
+  client: string;
+}) => {
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: {
+      name,
+      description,
+      status,
+      client,
+    },
+  });
+
+  return { addProject };
+};
+
+export { useDeleteClient, useAddClient, useAddProject };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   FormControl,
@@ -14,6 +15,9 @@ import {
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
+import { useGetClients } from '../hooks/queries';
+import { useAddProject } from '../hooks/mutations';
+
 import {
   InputFieldAttributesProps,
   TextareaFieldAttributesProps,
@@ -21,6 +25,15 @@ import {
 } from '../types';
 
 const ProjectForm = () => {
+  const navigate = useNavigate();
+  const { loading, error, clients } = useGetClients();
+  const { addProject } = useAddProject({
+    name: '',
+    description: '',
+    status: '',
+    client: '',
+  });
+
   const projectValidationSchema = yup.object({
     name: yup
       .string()
@@ -28,26 +41,49 @@ const ProjectForm = () => {
       .required('Required'),
     description: yup
       .string()
-      .min(20, 'Must beat least 20 characters')
+      .min(2, 'Must beat least 2 characters')
       .required('Required'),
     status: yup
       .string()
       .matches(/(new|progress|done)/)
       .required('Required'),
+    client: yup.string().required('Required'),
   });
+
+  if (loading) {
+    if (loading) return <Spinner size="xl" />;
+
+    if (error)
+      return (
+        <p>
+          Error :<br />
+          <pre>{error.message}</pre>
+        </p>
+      );
+  }
 
   return (
     <Container mt={10}>
       <Formik
-        initialValues={{ name: '', description: '', status: 'new' }}
+        initialValues={{
+          name: '',
+          description: '',
+          status: 'new',
+          client: '',
+        }}
         validationSchema={projectValidationSchema}
         initialStatus={false}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 1000);
+
+          addProject({
+            variables: {
+              ...values,
+            },
+          });
+          setSubmitting(false);
+          resetForm();
+          navigate('/');
         }}
       >
         {({ isSubmitting, isValid, dirty }) => (
@@ -91,6 +127,28 @@ const ProjectForm = () => {
                 </FormControl>
               )}
             </Field>
+            {clients.length > 0 ? (
+              <Field name="client">
+                {({ field, form }: SelectFieldAttributesProps) => (
+                  <FormControl
+                    mt={2}
+                    isInvalid={form.errors.client && form.touched.client}
+                  >
+                    <FormLabel htmlFor="client">Select client</FormLabel>
+                    <Select id="client" {...field}>
+                      {clients.map((client) => (
+                        <option key={client.id} value={client.id}>
+                          {client.name}
+                        </option>
+                      ))}
+                    </Select>
+                    <FormErrorMessage>{form.errors.client}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            ) : (
+              <Link to="client/new">Create client</Link>
+            )}
             <Flex justifyContent="flex-end">
               <Button
                 type="submit"
