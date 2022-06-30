@@ -10,8 +10,8 @@ interface ClientRowProps {
 }
 
 const ClientRow: React.FC<ClientRowProps> = ({ client }) => {
-  const { name, email, phone } = client;
-  const { deleteClient } = useDeleteClient({ id: client.id });
+  const { id, name, email, phone } = client;
+  const { deleteClient } = useDeleteClient({ id });
 
   return (
     <Tr>

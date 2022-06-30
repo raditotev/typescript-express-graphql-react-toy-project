@@ -77,9 +77,7 @@ const ProjectForm = () => {
           setSubmitting(true);
 
           addProject({
-            variables: {
-              ...values,
-            },
+            variables: values,
           });
           setSubmitting(false);
           resetForm();
