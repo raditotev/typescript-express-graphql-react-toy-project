@@ -10,8 +10,8 @@ import NewProjectPage from './pages/NewProject.page';
 function App() {
   return (
     <Container centerContent minWidth="80vw">
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="projects/:id" element={<ProjectPage />} />
