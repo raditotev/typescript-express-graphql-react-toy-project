@@ -77,7 +77,7 @@ const useAddClient = ({
         __typename: 'Mutation',
         addClient: {
           __typename: 'Client',
-          id: '-1',
+          id: String(Math.random()),
           name,
           email,
           phone,
