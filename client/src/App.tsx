@@ -6,6 +6,7 @@ import { Container } from '@chakra-ui/react';
 import HomePage from './pages/Home.page';
 import ProjectPage from './pages/Project.page';
 import NewProjectPage from './pages/NewProject.page';
+import EditProjectPage from './pages/EditProject.page';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="projects/:id" element={<ProjectPage />} />
           <Route path="projects/new" element={<NewProjectPage />} />
+          <Route path="projects/edit/:id" element={<EditProjectPage />} />
         </Routes>
       </Router>
     </Container>
