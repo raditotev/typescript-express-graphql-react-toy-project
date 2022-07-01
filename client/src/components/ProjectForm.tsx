@@ -18,6 +18,7 @@ import * as yup from 'yup';
 import { useGetClients } from '../hooks/queries';
 import { useAddProject } from '../hooks/mutations';
 
+import { IProject } from '../../../server/models/project';
 import {
   InputFieldAttributesProps,
   TextareaFieldAttributesProps,
@@ -25,7 +26,11 @@ import {
 } from '../types';
 import OverlaySpinner from './OverlaySpinner';
 
-const ProjectForm = () => {
+interface ProjectFormProps {
+  project?: IProject;
+}
+
+const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const navigate = useNavigate();
   const { loading, error, clients } = useGetClients();
   const { addProject } = useAddProject({
@@ -43,10 +48,6 @@ const ProjectForm = () => {
     description: yup
       .string()
       .min(2, 'Must beat least 2 characters')
-      .required('Required'),
-    status: yup
-      .string()
-      .matches(/(new|progress|done)/)
       .required('Required'),
     client: yup.string().required('Required'),
   });
@@ -67,13 +68,13 @@ const ProjectForm = () => {
     <Container mt={10}>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
-          status: 'new',
-          client: '',
+          name: project?.name || '',
+          description: project?.description || '',
+          status: project?.status || 'new',
+          client: project?.client.id || '',
         }}
         validationSchema={projectValidationSchema}
-        initialStatus={false}
+        validateOnMount={true}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
 
@@ -133,7 +134,9 @@ const ProjectForm = () => {
                     mt={2}
                     isInvalid={form.errors.client && form.touched.client}
                   >
-                    <FormLabel htmlFor="client">Select client</FormLabel>
+                    <FormLabel htmlFor="client">
+                      {project?.client ? 'Change' : 'Select'} client
+                    </FormLabel>
                     <Select id="client" {...field}>
                       {clients.map((client) => (
                         <option key={client.id} value={client.id}>
@@ -151,7 +154,7 @@ const ProjectForm = () => {
             <Flex justifyContent="flex-end">
               <Button
                 type="submit"
-                disabled={!(isValid && dirty)}
+                disabled={!isValid}
                 colorScheme="pink"
                 mt={5}
                 isLoading={isSubmitting}
@@ -159,7 +162,7 @@ const ProjectForm = () => {
                 spinnerPlacement="end"
                 loadingText="Creating"
               >
-                Create
+                {project ? 'Update' : 'Create'}
               </Button>
             </Flex>
           </Form>
