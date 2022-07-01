@@ -16,7 +16,7 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
 import { useGetClients } from '../hooks/queries';
-import { useAddProject } from '../hooks/mutations';
+import { useAddProject, useUpdateProject } from '../hooks/mutations';
 
 import { IProject } from '../../../server/models/project';
 import {
@@ -30,6 +30,12 @@ interface ProjectFormProps {
   project?: IProject;
 }
 
+enum ProjectStatus {
+  'Not Started' = 'new',
+  'In Progress' = 'progress',
+  'Done' = 'done',
+}
+
 const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
   const navigate = useNavigate();
   const { loading, error, clients } = useGetClients();
@@ -38,6 +44,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
     description: '',
     status: '',
     client: '',
+  });
+
+  const { updateProject } = useUpdateProject({
+    id: project?.client.id || '',
+    name: project?.name || '',
+    description: project?.description || '',
+    status: project?.status || 'new',
+    client: project?.client.id || '',
   });
 
   const projectValidationSchema = yup.object({
@@ -70,7 +84,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
         initialValues={{
           name: project?.name || '',
           description: project?.description || '',
-          status: project?.status || 'new',
+          status:
+            ProjectStatus[project?.status as keyof typeof ProjectStatus] ||
+            'new',
           client: project?.client.id || '',
         }}
         validationSchema={projectValidationSchema}
@@ -78,9 +94,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project }) => {
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
 
-          addProject({
-            variables: values,
-          });
+          project
+            ? updateProject({
+                variables: { ...values, id: project.id },
+              })
+            : addProject({
+                variables: values,
+              });
+
           setSubmitting(false);
           resetForm();
           navigate('/');
