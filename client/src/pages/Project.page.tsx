@@ -17,23 +17,23 @@ import { useDeleteProject } from '../hooks/mutations';
 import OverlaySpinner from '../components/OverlaySpinner';
 
 const ProjectPage = () => {
-  const { id } = useParams();
+  const params = useParams();
   const navigate = useNavigate();
 
-  const { loading, error, project } = useGetSingleProject({ id });
+  const { loading, error, project } = useGetSingleProject({ id: params.id });
   const { deleteProject } = useDeleteProject({ id: '' });
 
   if (loading) return <OverlaySpinner />;
   if (error)
     return (
-      <p>
+      <Box>
         Error :<br />
         <pre>{error.message}</pre>
-      </p>
+      </Box>
     );
   if (!project) return <NotFound message="No projects found" />;
 
-  const { name, description, status, client } = project;
+  const { id, name, description, status, client } = project;
 
   const deleteHandler = () => {
     if (!!id) {
@@ -79,7 +79,7 @@ const ProjectPage = () => {
         </Text>
       </Box>
       <Stack direction="row" spacing={4} alignSelf="flex-end" mt={10}>
-        <Button>EDIT</Button>
+        <Button onClick={() => navigate(`/projects/edit/${id}`)}>EDIT</Button>
         <Button colorScheme="pink" onClick={deleteHandler}>
           DELETE
         </Button>
