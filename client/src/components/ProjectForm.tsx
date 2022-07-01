@@ -23,6 +23,7 @@ import {
   TextareaFieldAttributesProps,
   SelectFieldAttributesProps,
 } from '../types';
+import OverlaySpinner from './OverlaySpinner';
 
 const ProjectForm = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const ProjectForm = () => {
   });
 
   if (loading) {
-    if (loading) return <Spinner size="xl" />;
+    if (loading) return <OverlaySpinner />;
 
     if (error)
       return (

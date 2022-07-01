@@ -7,7 +7,6 @@ import {
   Heading,
   Stack,
   Text,
-  Spinner,
 } from '@chakra-ui/react';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
 import { Link, useParams, useNavigate } from 'react-router-dom';
@@ -15,6 +14,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useGetSingleProject } from '../hooks/queries';
 import NotFound from '../components/NotFound';
 import { useDeleteProject } from '../hooks/mutations';
+import OverlaySpinner from '../components/OverlaySpinner';
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -23,12 +23,7 @@ const ProjectPage = () => {
   const { loading, error, project } = useGetSingleProject({ id });
   const { deleteProject } = useDeleteProject({ id: '' });
 
-  if (loading)
-    return (
-      <Flex justifyContent="center" alignItems="center" height="50vh">
-        <Spinner size="xl" />
-      </Flex>
-    );
+  if (loading) return <OverlaySpinner />;
   if (error)
     return (
       <p>
