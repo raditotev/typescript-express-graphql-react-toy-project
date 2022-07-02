@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Spinner } from '@chakra-ui/react';
 
-import { useGetProjects } from '../hooks/queries';
+import { useGetProjects } from '../hooks/get-projects.hook';
 import ProjectItem from './ProjectItem';
 import NotFound from './NotFound';
 

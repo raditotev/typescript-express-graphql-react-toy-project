@@ -2,7 +2,7 @@ import React from 'react';
 import { Tr, Td, IconButton } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 
-import { useDeleteClient } from '../hooks/mutations';
+import { useDeleteClient } from '../hooks/delete-client.hook';
 import { IClient } from '../../../server/models/client';
 
 interface ClientRowProps {

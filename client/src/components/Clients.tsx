@@ -9,7 +9,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 
-import { useGetClients } from '../hooks/queries';
+import { useGetClients } from '../hooks/get-clients.hook';
 import ClientRow from './ClientRow';
 import NotFound from './NotFound';
 

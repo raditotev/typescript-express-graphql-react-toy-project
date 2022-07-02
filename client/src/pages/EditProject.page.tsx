@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Container, Heading, Text } from '@chakra-ui/react';
 
 import ProjectForm from '../components/ProjectForm';
-import { useGetSingleProject } from '../hooks/queries';
+import { useGetSingleProject } from '../hooks/get-single-project.hook';
 import OverlaySpinner from '../components/OverlaySpinner';
 
 const EditProjectPage = () => {

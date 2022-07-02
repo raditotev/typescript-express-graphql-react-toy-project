@@ -15,8 +15,9 @@ import {
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 
-import { useGetClients } from '../hooks/queries';
-import { useAddProject, useUpdateProject } from '../hooks/mutations';
+import { useGetClients } from '../hooks/get-clients.hook';
+import { useAddProject } from '../hooks/add-project.hook';
+import { useUpdateProject } from '../hooks/update-project.hook';
 
 import { IProject } from '../../../server/models/project';
 import {

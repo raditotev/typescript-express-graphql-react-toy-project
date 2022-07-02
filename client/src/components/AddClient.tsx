@@ -7,7 +7,7 @@ import {
   ModalCloseButton,
   ModalBody,
 } from '@chakra-ui/react';
-import { useAddClient } from '../hooks/mutations';
+import { useAddClient } from '../hooks/add-client.hook';
 import ClientForm from './ClientForm';
 
 interface AddClientProps {

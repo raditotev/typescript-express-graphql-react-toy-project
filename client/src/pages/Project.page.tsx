@@ -11,9 +11,9 @@ import {
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-import { useGetSingleProject } from '../hooks/queries';
+import { useGetSingleProject } from '../hooks/get-single-project.hook';
 import NotFound from '../components/NotFound';
-import { useDeleteProject } from '../hooks/mutations';
+import { useDeleteProject } from '../hooks/delete-project.hook';
 import OverlaySpinner from '../components/OverlaySpinner';
 
 const ProjectPage = () => {
